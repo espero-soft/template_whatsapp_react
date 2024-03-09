@@ -2,6 +2,8 @@
 
 This is a simple template for a WhatsApp Web clone using React. It includes basic components for Inbox, Message List, Login, Contacts, and Profile. The application is designed to provide a starting point for building a messaging application similar to WhatsApp.
 
+![Messenger](./public/capture/messenger.png)
+
 ## Features
 
 - **Inbox:** View and manage your conversations.
