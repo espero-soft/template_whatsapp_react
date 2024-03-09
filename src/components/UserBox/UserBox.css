@@ -1,0 +1,21 @@
+/*
+  Authors : Mudey Formation
+  Website : https://mudey.fr/
+  App Name : E-commerce with React.Js
+  Created At : 09/03/2024 17:29:04
+*/
+
+.UserBox {
+  font-size: medium;
+}
+.user-details {
+ height: auto;
+ flex-direction: column;
+}
+.user-details .username{
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+.user-details small{
+  font-size: 0.7rem;
+}

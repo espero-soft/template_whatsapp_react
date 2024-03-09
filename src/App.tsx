@@ -1,20 +1,24 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
-import { Navbar } from './components/Navbar'
-import { About } from './pages/About'
-import { Home } from './pages/Home'
+import Inbox from './components/Inbox/Inbox';
+import MessageList from './components/MessageList/MessageList';
+import Login from './components/Login/Login';
+import Contacts from './components/Contacts/Contacts';
+import Profil from './components/Profil/Profil';
 
 const App: React.FC = () => {
+
   return (
     <BrowserRouter>
-      <Navbar />
-      <div className="container">
+      {/* <div className="container-fluid p-0"> */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/" element={<Inbox />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/message" element={<MessageList />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/profil" element={<Profil />} />
         </Routes>
-      </div>
+      {/* </div> */}
     </BrowserRouter>
   )
 }

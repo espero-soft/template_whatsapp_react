@@ -1,0 +1,29 @@
+/*
+  Authors : Mudey Formation
+  Website : https://mudey.fr/
+  App Name : E-commerce with React.Js
+  Created At : 09/03/2024 15:03:54
+*/
+
+.InboxItem {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
+  
+}
+.InboxItem:hover {
+  background-color: #e0e0e0;
+}
+.Inbox-Details{
+  flex: 1;
+}
+.InboxItem:last-child{
+  /* border: none; */
+}
+.last-message .message{
+  white-space: nowrap;
+  /* border: 1px solid red; */
+  max-width: 65vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

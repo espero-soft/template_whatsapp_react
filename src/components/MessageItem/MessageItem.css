@@ -1,0 +1,32 @@
+/*
+  Authors : Mudey Formation
+  Website : https://mudey.fr/
+  App Name : E-commerce with React.Js
+  Created At : 09/03/2024 15:39:23
+*/
+
+.MessageItem {
+  background-color: white;
+  margin-bottom: 4px;
+  width: 75%;
+}
+.MessageItem.owner {
+  background-color: var(--bg);
+  color: white;
+  margin-left: calc(100% - 75%);
+}
+.MessageItem.owner {
+  background-color: var(--bg);
+  color: white;
+}
+.MessageItem .metadata{
+  font-size: 0.8rem;
+  color: gray;
+  font-style: italic;
+}
+.MessageItem.owner .metadata{
+  font-size: 0.8rem;
+  color: rgb(253, 253, 253);
+  position: relative;
+  justify-content: end;
+}
