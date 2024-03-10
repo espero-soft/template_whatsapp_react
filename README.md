@@ -1,6 +1,6 @@
-# WhatsApp Web Clone
+# MudeyApp Web Clone
 
-This is a simple template for a WhatsApp Web clone using React. It includes basic components for Inbox, Message List, Login, Contacts, and Profile. The application is designed to provide a starting point for building a messaging application similar to WhatsApp.
+This is a simple template for a MudeyApp Web clone using React. It includes basic components for Inbox, Message List, Login, Contacts, and Profile. The application is designed to provide a starting point for building a messaging application similar to MudeyApp.
 
 ![Profil](./public/capture/profil.png)
 ![Messenger](./public/capture/messenger.png)
@@ -27,13 +27,13 @@ Make sure you have Node.js and npm installed on your machine.
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/whatsapp-clone.git
+   git clone https://github.com/your-username/MudeyApp-clone.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd whatsapp-clone
+   cd MudeyApp-clone
    ```
 
 3. Install dependencies:
@@ -60,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Contributing
 
-Feel free to contribute to improve or extend this template. If you find any issues or have suggestions, please open an [issue](https://github.com/your-username/whatsapp-clone/issues).
+Feel free to contribute to improve or extend this template. If you find any issues or have suggestions, please open an [issue](https://github.com/your-username/MudeyApp-clone/issues).
 
 ## License
 
@@ -68,5 +68,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-- This project was inspired by the user interface of WhatsApp Web.
+- This project was inspired by the user interface of MudeyApp Web.
 - Special thanks to the React and React Router communities for their amazing work.

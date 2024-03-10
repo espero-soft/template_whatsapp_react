@@ -1,5 +1,6 @@
 :root{
-  --bg: 	#128c7e;
+  /* --bg: 	#128c7e; */
+  --bg: 	#2082f9;
   --header-height: 50px;
   --animate-duration: 800ms;
   --animate-delay: 0.9s;
@@ -68,4 +69,26 @@ a{
 
 strong,.username{
   font-family: "Roboto", sans-serif;
+}
+
+.online::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+  margin-right: 2px;
+  background-color: green;
+  border-radius: 50%; /* Ajout de la propriété border-radius pour créer un cercle */
+  display: inline-block; /* Ajout du type de contenu pour s'assurer que le pseudo-élément est correctement rendu */
+}
+
+.offline::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+  margin-right: 2px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
 }

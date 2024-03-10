@@ -8,3 +8,6 @@
 .ContactItem {
   border-bottom: 0.1px solid #ccc;
 }
+.audio-call, .video-call {
+  color: var(--bg);
+}

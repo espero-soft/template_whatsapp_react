@@ -17,6 +17,78 @@ interface InboxProps {
 
 const Inbox : FC<InboxProps> = () =>{
 
+  const inboxData = [
+    {
+      id: 1,
+      name: 'John Doe',
+      message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      time: '07:00',
+      imageUrl: 'https://i.pravatar.cc/50?img=1',
+    },
+    {
+      id: 2,
+      name: 'Jane Smith',
+      message: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      time: '08:15',
+      imageUrl: 'https://i.pravatar.cc/50?img=2',
+    },
+    {
+      id: 3,
+      name: 'Alice Johnson',
+      message: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+      time: '10:30',
+      imageUrl: 'https://i.pravatar.cc/50?img=3',
+    },
+    {
+      id: 4,
+      name: 'Bob Brown',
+      message: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      time: '12:45',
+      imageUrl: 'https://i.pravatar.cc/50?img=4',
+    },
+    {
+      id: 5,
+      name: 'Eva White',
+      message: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      time: '15:00',
+      imageUrl: 'https://i.pravatar.cc/50?img=5',
+    },
+    {
+      id: 6,
+      name: 'David Johnson',
+      message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      time: '17:30',
+      imageUrl: 'https://i.pravatar.cc/50?img=6',
+    },
+    {
+      id: 7,
+      name: 'Sophie Miller',
+      message: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      time: '18:45',
+      imageUrl: 'https://i.pravatar.cc/50?img=7',
+    },
+    {
+      id: 8,
+      name: 'Chris Taylor',
+      message: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+      time: '20:15',
+      imageUrl: 'https://i.pravatar.cc/50?img=8',
+    },
+    {
+      id: 9,
+      name: 'Olivia Davis',
+      message: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      time: '22:30',
+      imageUrl: 'https://i.pravatar.cc/50?img=9',
+    },
+    {
+      id: 10,
+      name: 'Michael Johnson',
+      message: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      time: '23:45',
+      imageUrl: 'https://i.pravatar.cc/50?img=10',
+    },
+  ];
 
 
     useEffect(() => {
@@ -31,26 +103,10 @@ const Inbox : FC<InboxProps> = () =>{
     <>
      <Header />
       <div className="Inbox page-content">
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
-          <InboxItem/>
+        {
+          inboxData.map((inbox)=>(<InboxItem key={inbox.id} inbox={inbox} />))
+        }
+          
         
       </div>
     </>

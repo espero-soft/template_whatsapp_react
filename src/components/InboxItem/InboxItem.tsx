@@ -10,11 +10,16 @@ import { Link } from 'react-router-dom';
 
 
 interface InboxItemProps {
-
+  inbox: {
+    name: string 
+    message: string 
+    time: string 
+    imageUrl: string
+  }
 }
 
 
-const InboxItem: FC<InboxItemProps> = () => {
+const InboxItem: FC<InboxItemProps> = ({inbox}) => {
 
 
 
@@ -26,21 +31,23 @@ const InboxItem: FC<InboxItemProps> = () => {
     runLocalData()
   })
 
+  const {name, message, time, imageUrl} = inbox
+
   return (
     <div className="InboxItem">
       <Link to="/message" className="d-flex gap-2">
         <div className="Inbox-Picture">
-          <img src="/user.jpg" width={50} className='rounded-circle shadow-lg' alt="" />
+          <img src={imageUrl} width={50} className='rounded-circle shadow-lg' alt="" />
         </div>
         <div className="Inbox-Details">
           <div className="author">
-            <strong>AKPOLI Espero</strong>
+            <strong>{name}</strong>
           </div>
           <div className="last-message d-flex justify-content-between">
             <div className='message'>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, dolore aliquid recusandae odit facilis repudiandae deserunt eveniet ratione nam nemo quis? Perspiciatis vel maxime ab praesentium deleniti, fugit dicta voluptatibus.
+              {message}
             </div>
-            <div className="time text-bold">07:00</div>
+            <div className="time text-bold">{time}</div>
           </div>
         </div>
       </Link>

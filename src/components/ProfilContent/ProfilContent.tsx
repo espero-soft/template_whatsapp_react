@@ -30,7 +30,7 @@ const ProfilContent: FC<ProfilContentProps> = () => {
       <div className="profil-cover p-3">
         <div className="profil-picture d-flex justify-content-center ">
           <div className="position-relative">
-            <img src="/user.jpg" width={150} className='rounded-circle' alt="" />
+            <img src="https://i.pravatar.cc/50?img=20" width={100} className='rounded-circle' alt="" />
 
             <div className="bg-primary  rounded-circle position-absolute upload-picture bottom-0">
               <div className="icon d-flex p-1 ">

@@ -49,7 +49,7 @@ const Header: FC<HeaderProps> = () => {
           {
             location.pathname === "/" ?
               <div className="HomeBox d-flex gap-2 align-items-center">
-                <strong>WhatsApp</strong>
+                <strong>MudeyApp</strong>
               </div>
               :
               location.pathname === "/message" ?
