@@ -36,12 +36,13 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
     imageUrl,
   } = contact
   return (
-    <Link to='/profil'>
-      <div className="ContactItem p-1 d-flex gap-2 px-2 align-items-center">
-        <div className="user-picture">
-          <img src={imageUrl} width={40} className='rounded-circle shadow-lg' alt="" />
-        </div>
-        <div className="user-details d-flex  flex-grow-1">
+
+    <div className="ContactItem p-1 d-flex gap-2 px-2 align-items-center">
+      <div className="user-picture">
+        <img src={imageUrl} width={40} className='rounded-circle shadow-lg' alt="" />
+      </div>
+      <Link to='/profil' className='flex-grow-1'>
+        <div className="user-details d-flex">
           <div className="username">{name}</div>
           {
             status === "En ligne" ?
@@ -50,16 +51,27 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
               <small className="offline"> {status} </small>
           }
         </div>
-        <div className="user-call d-flex gap-3">
-          <div className="audio-call">
-            <i className="fa fa-phone"></i>
-          </div>
-          <div className="video-call">
-            <i className="fa fa-video"></i>
-          </div>
+
+      </Link>
+      <div className="user-call d-flex gap-3">
+        <div className="audio-call">
+          <Link to={"/audio-call"}>
+            <button className='btn'>
+              <i className="fa fa-phone"></i>
+            </button>
+
+          </Link>
+        </div>
+        <div className="video-call">
+          <Link to={"/video-call"}>
+            <button className='btn'>
+              <i className="fa fa-video"></i>
+            </button>
+          </Link>
         </div>
       </div>
-    </Link>
+    </div>
+
   );
 }
 

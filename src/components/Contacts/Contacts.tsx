@@ -6,7 +6,6 @@
 */
 import React, { FC, useEffect } from 'react';
 import './Contacts.css';
-import Header from '../Header/Header';
 import ContactList from '../ContactList/ContactList';
 
 
@@ -29,7 +28,6 @@ const Contacts : FC<ContactsProps> = () =>{
 
   return (
       <>
-          <Header/>
           <ContactList/>
       </>
   );

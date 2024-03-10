@@ -10,6 +10,8 @@ import { Navbar } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import UserBox from '../UserBox/UserBox';
 import SettingBox from '../SettingBox/SettingBox';
+import { ucfirst } from '../../helpers/utiles';
+import { Link } from 'react-router-dom';
 
 
 interface HeaderProps {
@@ -22,14 +24,22 @@ const Header: FC<HeaderProps> = () => {
   const location = useLocation()
   const [setting, setSetting] = useState<boolean>(false)
 
+  let pageName = location.pathname.split('/')[1]
+
+
+
+  if (pageName.search('-') !== -1) {
+    pageName = pageName.split('-').map(t => ucfirst(t)).join(' ')
+  }
+
   useEffect(() => {
     // window.scrollTo(0, 0)
     const runLocalData = async () => {
 
     }
     runLocalData()
-  })
-  console.log(location);
+  }, [])
+
 
 
   const handleGoBackClick = () => {
@@ -45,7 +55,7 @@ const Header: FC<HeaderProps> = () => {
   return (
     <div className="Header">
       <Navbar className='p-1 shadow-lg bg-primary' bg="" expand="lg" >
-        <Navbar.Brand className='p-0' style={{ color: 'white' }}>
+        <Navbar.Brand className='p-0 flex-grow-1' style={{ color: 'white' }}>
           {
             location.pathname === "/" ?
               <div className="HomeBox d-flex gap-2 align-items-center">
@@ -53,27 +63,33 @@ const Header: FC<HeaderProps> = () => {
               </div>
               :
               location.pathname === "/message" ?
-                <UserBox />
+                <>
+                  <UserBox />
+                </>
                 :
-                location.pathname === "/login" ?
-                  <div className="HomeBox d-flex gap-2 align-items-center">
-                    <strong>Login</strong>
-                  </div>
-                  :
-                location.pathname === "/profil" ?
-                  <div className="HomeBox d-flex gap-2 align-items-center">
-                    <strong>Profil</strong>
-                  </div>
-                  :
-                location.pathname === "/contacts" ?
-                  <div className="HomeBox d-flex gap-2 align-items-center">
-                    <strong>Contacts</strong>
-                  </div>
-                  :
-                  null
+                <div className="HomeBox d-flex gap-2 align-items-center">
+                  <strong>{ucfirst(pageName)}</strong>
+                </div>
           }
         </Navbar.Brand>
 
+        {
+          location.pathname === "/message" &&
+          <>
+            <Link to={"/audio-call"}>
+              <button className='btn'>
+                <i className="fa fa-phone"></i>
+              </button>
+
+            </Link>
+            <Link to={"/video-call"}>
+              <button className='btn'>
+                <i className="fa fa-video"></i>
+              </button>
+            </Link>
+          </>
+
+        }
         {
           location.pathname !== "/" &&
           <button onClick={handleGoBackClick} className='btn' style={{ color: 'white' }}>
@@ -83,12 +99,12 @@ const Header: FC<HeaderProps> = () => {
         {
           location.pathname === "/" &&
           <div className="position-relative setting">
-            <button onClick={()=>setSetting(!setting)} className='btn' style={{ color: 'white' }}>
+            <button onClick={() => setSetting(!setting)} className='btn' style={{ color: 'white' }}>
               <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
-            { setting && <SettingBox
-            onHide={()=>setSetting(false)}
-            /> }
+            {setting && <SettingBox
+              onHide={() => setSetting(false)}
+            />}
           </div>
         }
 

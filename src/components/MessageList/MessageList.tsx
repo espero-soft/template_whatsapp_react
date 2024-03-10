@@ -7,8 +7,6 @@
 import React, { FC, useEffect } from 'react';
 import './MessageList.css';
 import MessageItem from '../MessageItem/MessageItem';
-import Header from '../Header/Header';
-import MessageBox from '../MessageBox/MessageBox';
 
 
 interface MessageListProps {
@@ -92,7 +90,6 @@ const MessageList: FC<MessageListProps> = () => {
 
   return (
     <>
-      <Header />
       <div className="MessageList page-content-sm p-1" style={{ backgroundImage: `url('/bg.png')` }}>
         {
           messages.map((message) => {
@@ -104,7 +101,7 @@ const MessageList: FC<MessageListProps> = () => {
           })
         }
       </div>
-      <MessageBox/>
+      
     </>
   );
 }

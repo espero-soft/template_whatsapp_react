@@ -9,7 +9,6 @@ import { Form, Button } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './Login.css';
-import Header from '../Header/Header';
 
 interface LoginProps {}
 
@@ -40,7 +39,6 @@ const Login: FC<LoginProps> = () => {
 
   return (
     <div className="Login">
-      <Header />
       <div className="page-content p-1">
       
         <Form onSubmit={formik.handleSubmit}>

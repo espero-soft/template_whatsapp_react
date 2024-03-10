@@ -1,0 +1,25 @@
+/*
+  Authors : Mudey Formation
+  Website : https://mudey.fr/
+  App Name : E-commerce with React.Js
+  Created At : 10/03/2024 20:35:44
+*/
+
+.VideoCall {
+  color: white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  
+}
+.Video-small{
+  height: 20vh;
+  width: 30vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  border-radius: 10px;
+  bottom: 60px;
+  right: 20px;
+}

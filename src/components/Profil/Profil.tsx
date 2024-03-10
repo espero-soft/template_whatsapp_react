@@ -6,7 +6,6 @@
 */
 import React, { FC, useEffect } from 'react';
 import './Profil.css';
-import Header from '../Header/Header';
 import ProfilContent from '../ProfilContent/ProfilContent';
 
 
@@ -29,7 +28,6 @@ const Profil : FC<ProfilProps> = () =>{
 
   return (
       <>
-          <Header/>
           <ProfilContent/>
       </>
   );

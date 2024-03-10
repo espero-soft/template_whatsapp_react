@@ -7,7 +7,7 @@
 import React, { FC, useEffect } from 'react';
 import './Inbox.css';
 import InboxItem from '../InboxItem/InboxItem';
-import Header from '../Header/Header';
+import { Link } from 'react-router-dom';
 
 
 interface InboxProps {
@@ -101,12 +101,14 @@ const Inbox : FC<InboxProps> = () =>{
 
   return (
     <>
-     <Header />
       <div className="Inbox page-content">
         {
           inboxData.map((inbox)=>(<InboxItem key={inbox.id} inbox={inbox} />))
         }
           
+          <Link to={"/contacts"} className="icon contact-link shadow-lg">
+            <i className="fa fa-message"></i>
+            </Link>
         
       </div>
     </>

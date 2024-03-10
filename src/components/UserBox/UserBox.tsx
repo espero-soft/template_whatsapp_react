@@ -36,6 +36,7 @@ const UserBox: FC<UserBoxProps> = () => {
         <div className="username">AKPOLI Espero</div>
         <small className="online">En ligne</small>
       </div>
+    
     </div>
     </Link>
   );

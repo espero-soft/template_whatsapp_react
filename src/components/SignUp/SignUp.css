@@ -1,0 +1,20 @@
+.Register {}
+.Register .page-content{
+  display: flex;
+  align-items: center;
+}
+.Register .page-content form{
+  width: 100%;
+}
+
+.Register .page-content form input{
+  height: 50px;
+  border-radius: 0;
+  margin-bottom: 4px;
+}
+.Register .page-content form .btn,
+.Register .page-content form button{
+  height: 50px;
+  width: 100%;
+  border-radius: 0;
+}

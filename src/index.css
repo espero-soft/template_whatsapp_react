@@ -1,6 +1,7 @@
 :root{
-  /* --bg: 	#128c7e; */
-  --bg: 	#2082f9;
+  --bg: 	#128c7e;
+  /* --bg: 	#2082f9; */
+  /* --bg: 	#16956f; */
   --header-height: 50px;
   --animate-duration: 800ms;
   --animate-delay: 0.9s;
@@ -10,7 +11,27 @@ font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, O
 }
 /* This only changes this particular animation duration */
 
+.author{
+  color: var(--bg);
+}
+.ContactItem .username{
+  color: var(--bg);
+}
+button{
+  border-radius: 0 !important;
+  height: 50px;
+}
+.f-center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+select,
+input[type='text']{
+  border: 1px solid #ccc;
+  border-radius: 0 !important;
 
+}
 
 a{
   text-decoration: none !important;

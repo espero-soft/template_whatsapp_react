@@ -7,6 +7,10 @@
 import React, { FC, useEffect } from 'react';
 import './SettingBox.css';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getAuthState } from '../../redux/selectors/selectors';
+import { useDispatch } from 'react-redux';
+import { LOGOUT } from '../../redux/actions/actionTypes';
 
 
 interface SettingBoxProps {
@@ -17,6 +21,8 @@ interface SettingBoxProps {
 const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
 
 
+  const isAuth = useSelector(getAuthState)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -26,15 +32,19 @@ const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
     runLocalData()
   })
 
+  const handleLogout = (event: any) => {
+    event.preventDefault()
+    dispatch({
+      type: LOGOUT,
+      payload: null
+    })
+  }
+
   return (
     <div className="SettingBox" onMouseLeave={onHide}>
       <div className="setting-box position-absolute card shadow-lg">
         <ul className="list-group">
-          <li className="list-group-item">
-            <Link to="/login">
-              Login
-            </Link>
-          </li>
+         
           <li className="list-group-item">
             <Link to="/contacts">
               Contacts
@@ -45,7 +55,28 @@ const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
               Profil
             </Link>
           </li>
-         
+          {
+            isAuth ?
+            // logout
+              <li className="list-group-item" onClick={handleLogout}>
+             
+                  Logout
+               
+              </li>
+            :
+            <>
+              <li className="list-group-item">
+                <Link to="/signin">
+                  Login
+                </Link>
+              </li>
+              <li className="list-group-item">
+                <Link to="/signup">
+                  Register
+                </Link>
+              </li>
+            </>
+          }
         </ul>
       </div>
     </div>
