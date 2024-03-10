@@ -46,7 +46,16 @@ const ProfilContent: FC<ProfilContentProps> = () => {
           <div className="icon">
             <i className="fa fa-user"></i>
           </div>
-          <div className="name flex-grow-1">Merci</div>
+          <div className="name flex-grow-1">AKPOLI Espero</div>
+          <div className="icon">
+            <i className="fa fa-pencil"></i>
+          </div>
+        </div>
+        <div className="profil-details-item p-1 d-flex align-items-center gap-2">
+          <div className="icon">
+            <i className="fa fa-message"></i>
+          </div>
+          <div className="name flex-grow-1">eakpoli@gmail.com</div>
           <div className="icon">
             <i className="fa fa-pencil"></i>
           </div>
@@ -65,7 +74,7 @@ const ProfilContent: FC<ProfilContentProps> = () => {
             <i className="fa fa-phone"></i>
 
           </div>
-          <div className="name flex-grow-1">Merci</div>
+          <div className="name flex-grow-1">+33 7 55 18 19 35</div>
           <div className="icon">
             <i className="fa fa-pencil"></i>
 
