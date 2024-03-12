@@ -61,7 +61,10 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
 
     <div className="ContactItem p-1 d-flex gap-2 px-2 align-items-center">
       <div className="user-picture">
-        <img src={imageUrl} width={40} className='rounded-circle shadow-lg' alt="" />
+        <img src={imageUrl} 
+        width={40} 
+        height={40}
+        className='rounded-circle shadow-lg' alt="" />
       </div>
       <Link to={'/profil/' + contact._id} className='flex-grow-1'>
         <div className="user-details d-flex">
