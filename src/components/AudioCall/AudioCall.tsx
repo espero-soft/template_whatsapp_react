@@ -4,7 +4,7 @@
   App Name : E-commerce with React.Js
   Created At : 10/03/2024 20:35:44
 */
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import './AudioCall.css';
 import {  useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -27,8 +27,11 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
 
   const {senderId} = useParams()
   const sender = useSelector(getSender)
+  const audioRef = useRef<HTMLAudioElement>(null)
   const [answer, setAnswer] = useState<string>('')
   const currentUser = useSelector(getCurrentUser)
+  const [callerStream, setCallerStream] = useState<MediaStream>();
+  const [callDuration, setCallDuration] = useState<number>(0);
   const dispach = useDispatch()
   
 
@@ -38,8 +41,6 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
         // console.log({ name: sender.name });
         navigator.mediaDevices.getUserMedia({ video: false, audio: true })
       .then((currentStream) => {
-        console.log({currentStream});
-        
         makeSound('audio-call');
         socket.emit("call-user", {
           to: sender._id,
@@ -48,7 +49,12 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
         })
         socket.on("call-rejected", ()=>{
           console.log('call-rejected');
-          setAnswer('Refusé !')
+          if(callDuration === 0){
+            setAnswer('Refusé !')
+          }else{
+            setAnswer('Coupé !')
+
+          }
           setTimeout(()=>{
             window.history.back();
           }, 2000)
@@ -65,6 +71,12 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
           call.answer(currentStream);
           call.on('stream', (userStream) => {
             console.log({userStream});
+            setCallerStream(userStream)
+            if(audioRef.current){
+              audioRef.current.srcObject = userStream
+            }
+            setAnswer('Communication en cours !')
+            stopSound();
             
             // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
           });
@@ -87,6 +99,18 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
     runLocalData()
   },[senderId])
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (callerStream) {
+      timer = setInterval(() => {
+        setCallDuration((prevDuration) => prevDuration + 1);
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [callerStream]);
+
+
+
   return (
     <div className="AudioCall page-content border f-center">
       <div className="AudioCallBox text-center gap-2 align-items-center">
@@ -96,10 +120,12 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
         <div className="user-details d-flex">
           <div className="username">{sender.name}</div>
           <small className="">Appel en cours ...</small>
-          <small className="">03:00</small>
-          {
-            answer && <small className="">{answer}</small>
-          }
+          <small className="">{`${Math.floor(callDuration / 60)}:${callDuration % 60}`}</small>
+          { answer && <small className="">{answer}</small> }
+            {callerStream && (
+          <audio autoPlay controls ref={audioRef} ></audio>
+          
+        )}
         </div>
       </div>
     </div>
