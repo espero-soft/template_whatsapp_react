@@ -13,6 +13,18 @@ const dataStructure: any = [
       },
     ],
   },
+  {
+    contacts: [
+      {
+        indexes: [
+          {
+            // email: { unique: true },
+          },
+        ],
+        primaryKey: '_id',
+      },
+    ],
+  },
  
 ]
 const dbVersion: number = 1

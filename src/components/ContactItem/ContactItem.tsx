@@ -6,11 +6,15 @@
 */
 import React, { FC, useEffect } from 'react';
 import './ContactItem.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { getChat } from '../../api/api-chat';
+import { useDispatch } from 'react-redux';
+import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
 
 
 interface ContactItemProps {
   contact: {
+    _id: string
     name: string
     status: string
     imageUrl: string
@@ -20,7 +24,8 @@ interface ContactItemProps {
 
 const ContactItem: FC<ContactItemProps> = ({ contact }) => {
 
-
+  const navigate = useNavigate()
+  const dispach = useDispatch()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -35,13 +40,30 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
     status,
     imageUrl,
   } = contact
+
+
+
+  const handleGoToMessage = async () => {
+    const data = await getChat(contact._id!)
+  
+    dispach({
+      type: ADD_TO_STORAGE,
+      unique: true,
+      key: 'sender',
+      payload: contact
+    })
+    if(data.isSuccess){
+      navigate('/message/'+data.result._id)
+    }
+  }
+
   return (
 
     <div className="ContactItem p-1 d-flex gap-2 px-2 align-items-center">
       <div className="user-picture">
         <img src={imageUrl} width={40} className='rounded-circle shadow-lg' alt="" />
       </div>
-      <Link to='/profil' className='flex-grow-1'>
+      <Link to={'/profil/' + contact._id} className='flex-grow-1'>
         <div className="user-details d-flex">
           <div className="username">{name}</div>
           {
@@ -54,6 +76,13 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
 
       </Link>
       <div className="user-call d-flex gap-3">
+        <div className="audio-call">
+
+          <button className='btn' onClick={handleGoToMessage}>
+            <i className="fa fa-message"></i>
+          </button>
+
+        </div>
         <div className="audio-call">
           <Link to={"/audio-call"}>
             <button className='btn'>

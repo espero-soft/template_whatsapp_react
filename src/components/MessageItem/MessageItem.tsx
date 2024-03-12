@@ -6,16 +6,19 @@
 */
 import React, { FC, useEffect } from 'react';
 import './MessageItem.css';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from '../../redux/selectors/selectors';
 
 
 interface MessageItemProps {
- owner: boolean
  message: any
 }
 
 
-const MessageItem : FC<MessageItemProps> = ({owner, message}) =>{
+const MessageItem : FC<MessageItemProps> = ({ message}) =>{
 
+  const currentUser = useSelector(getCurrentUser)
 
 
     useEffect(() => {
@@ -26,13 +29,15 @@ const MessageItem : FC<MessageItemProps> = ({owner, message}) =>{
       runLocalData()
     })
 
+    const owner = currentUser._id !== message.sender
+
   return (
       <div className={"MessageItem p-1 shadow-lg rounded "+(owner ? 'owner' : '')}>
           <div className="message">
           {message.content}
           </div>
           <div className="metadata d-flex">
-          <small>envoyé le {new Date(message.timestamp).toLocaleString()}</small>
+          <small>envoyé le {moment(message.created_at).fromNow()}</small>
           </div>
       </div>
   );

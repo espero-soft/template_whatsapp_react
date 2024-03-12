@@ -3,10 +3,9 @@
 export const baseUrl = () => {
     if (process.env.NODE_ENV === "development") {
       return "http://localhost:8080/"
-    }
-    if (process.env.NODE_ENV === "production") {
+    }else {
       return "https://api.funnel.mudey.fr/"
     }
   }
   
-  export const apiUrl = baseUrl()
+  export const apiUrl: string = baseUrl()

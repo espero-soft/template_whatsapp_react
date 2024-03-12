@@ -9,10 +9,10 @@ export interface Message {
   _id?: string;
   chatId: string;
   content: string;
-  type: TypeMessage;
-  owership: string;
+  type: TypeMessage| string;
+  ownership: string;
   sender: string;
-  file: string;
+  file?: string;
   shared: boolean;
   created_at?: Date;
   updated_at?: Date;

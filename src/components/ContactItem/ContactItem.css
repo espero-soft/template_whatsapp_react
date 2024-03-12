@@ -11,3 +11,6 @@
 .audio-call, .video-call {
   color: var(--bg);
 }
+.ContactItem .username{
+  white-space: nowrap;
+}

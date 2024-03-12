@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Inbox from './components/Inbox/Inbox';
 import MessageList from './components/MessageList/MessageList';
 import Login from './components/Login/Login';
 import Contacts from './components/Contacts/Contacts';
-import Profil from './components/Profil/Profil';
+import Profil from './components/Profil/ProfilComp';
 import SignUp from './components/SignUp/SignUp';
 import SignIn from './components/SignIn/SignIn';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
@@ -19,8 +19,16 @@ import MessageBox from './components/MessageBox/MessageBox';
 import AudioCall from './components/AudioCall/AudioCall';
 import VideoCall from './components/VideoCall/VideoCall';
 import CallFooter from './components/CallFooter/CallFooter';
+import { initSocketIo, socket } from './api/api-socket';
 
 const App: React.FC = () => {
+
+  useEffect(() => {
+    initSocketIo()
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <BrowserRouter>
@@ -75,14 +83,14 @@ const App: React.FC = () => {
           </>
           
           } />
-        <Route path="/message" element={
+        <Route path="/message/:chatId" element={
           <PrivateRoute>
             <Header />
             <MessageList />
             <MessageBox />
           </PrivateRoute>} />
         <Route path="/contacts" element={<PrivateRoute><Header /> <Contacts /></PrivateRoute>} />
-        <Route path="/profil" element={<PrivateRoute><Header /> <Profil /></PrivateRoute>} />
+        <Route path="/profil/:userId" element={<PrivateRoute><Header /> <Profil /></PrivateRoute>} />
         <Route
           path="/verification/:partial_token"
           element={

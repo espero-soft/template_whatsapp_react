@@ -62,7 +62,7 @@ const Header: FC<HeaderProps> = () => {
                 <strong>MudeyApp</strong>
               </div>
               :
-              location.pathname === "/message" ?
+              location.pathname.startsWith("/message") ?
                 <>
                   <UserBox />
                 </>
@@ -74,7 +74,7 @@ const Header: FC<HeaderProps> = () => {
         </Navbar.Brand>
 
         {
-          location.pathname === "/message" &&
+          location.pathname.startsWith("/message") &&
           <>
             <Link to={"/audio-call"}>
               <button className='btn'>

@@ -10,6 +10,8 @@ export const isAdminSelector = (state: GlobalState) => state.auth?.user?.roles.i
 
 
 export const getCurrentUser = (state: GlobalState) => state.auth.user
+export const getSender = (state: GlobalState) => state.storage?.sender
+export const getCurrentChatId = (state: GlobalState) => state.storage?.currentChatId
 
 export const getUserId = (state: GlobalState) => state.auth.userId
 
@@ -32,6 +34,9 @@ export const getCarrier = (state: GlobalState) => state.storage?.carrier
 export const getCurrentStep = (state: GlobalState, tunnelId: string) => state.storage ? state.storage[tunnelId] : undefined;
 
 export const getBlocks = (state: GlobalState) => state.storage?.blocks 
+
+
+
 export const getCurrentBlock = (state: GlobalState) => state.storage?.currentBlock 
 export const getCurrentTemplate = (state: GlobalState) => state.storage?.currentTemplate 
 

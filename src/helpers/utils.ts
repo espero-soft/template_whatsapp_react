@@ -1,6 +1,10 @@
 import { apiUrl } from "../api/apiUtils"
 import { getItem } from "./localsorage.service"
 
+
+
+export const  defaultImage: string = '/avatar/empty.png'
+
 export const excludePath = ["/dashboard",]
 
 // export const getMetas = (metas: Meta[], name: string) => {

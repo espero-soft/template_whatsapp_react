@@ -8,7 +8,7 @@ import React, { FC, useEffect } from 'react';
 import './SettingBox.css';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getAuthState } from '../../redux/selectors/selectors';
+import { getAuthState, getCurrentUser } from '../../redux/selectors/selectors';
 import { useDispatch } from 'react-redux';
 import { LOGOUT } from '../../redux/actions/actionTypes';
 
@@ -22,6 +22,8 @@ const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
 
 
   const isAuth = useSelector(getAuthState)
+  const currentUser = useSelector(getCurrentUser)
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link to="/profil">
+            <Link to={"/profil/"+currentUser._id}>
               Profil
             </Link>
           </li>

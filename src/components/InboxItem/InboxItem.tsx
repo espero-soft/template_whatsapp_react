@@ -6,22 +6,28 @@
 */
 import React, { FC, useEffect } from 'react';
 import './InboxItem.css';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Chat } from '../../models/Chat';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from '../../redux/selectors/selectors';
+import { defaultImage } from '../../helpers/utils';
+import moment from 'moment';
+import { User } from '../../models/User';
+import { useDispatch } from 'react-redux';
+import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
 
 
 interface InboxItemProps {
-  inbox: {
-    name: string 
-    message: string 
-    time: string 
-    imageUrl: string
-  }
+  chat: Chat
 }
 
 
-const InboxItem: FC<InboxItemProps> = ({inbox}) => {
+const InboxItem: FC<InboxItemProps> = ({ chat }) => {
 
+  const currentUser = useSelector(getCurrentUser)
 
+  const navigate = useNavigate()
+  const dispach = useDispatch()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -29,28 +35,54 @@ const InboxItem: FC<InboxItemProps> = ({inbox}) => {
 
     }
     runLocalData()
-  })
+  }, [currentUser])
 
-  const {name, message, time, imageUrl} = inbox
+  const handleGoToMessage = async (user: User) => {
+    const contact = {
+      _id: user._id,
+      name: user.fullname,
+      status: "En ligne",
+      imageUrl: user.profile.picture,
+    }
+
+    dispach({
+      type: ADD_TO_STORAGE,
+      unique: true,
+      key: 'sender',
+      payload: contact
+    })
+    navigate('/message/' + chat._id)
+
+  }
+
+  let user = chat.participants.find(p => p._id !== currentUser._id)
+
+  
+  console.log({ user, p:chat.participants });
+
+
+  if (!user) {
+    user = chat.participants[0]
+  }
 
   return (
     <div className="InboxItem">
-      <Link to="/message" className="d-flex gap-2">
+      <div onClick={() => handleGoToMessage(user!)} className="d-flex gap-2">
         <div className="Inbox-Picture">
-          <img src={imageUrl} width={50} className='rounded-circle shadow-lg' alt="" />
+          <img src={user.profile.picture || defaultImage} width={50} className='rounded-circle shadow-lg' alt="" />
         </div>
         <div className="Inbox-Details">
           <div className="author">
-            <strong>{name}</strong>
+            <strong>{user.fullname}</strong>
           </div>
-          <div className="last-message d-flex justify-content-between">
-            <div className='message'>
-              {message}
+          <div className="last-lastMessage d-flex justify-content-between">
+            <div className='lastMessage'>
+              {chat?.lastMessage?.content}
             </div>
-            <div className="time text-bold">{time}</div>
+            <div className="time text-bold">{moment(chat.created_at).fromNow()}</div>
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

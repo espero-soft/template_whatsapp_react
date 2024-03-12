@@ -26,9 +26,10 @@ const Loading : FC<LoadingProps> = () =>{
     })
 
   return (
-      <div className="Loading">
-          Loading Component
-      </div>
+    <div className="Loading page-content">
+    <div className="loading-spinner"></div>
+    <p>Loading...</p>
+  </div>
   );
 }
 

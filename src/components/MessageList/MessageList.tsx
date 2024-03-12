@@ -4,106 +4,83 @@
   App Name : E-commerce with React.Js
   Created At : 09/03/2024 15:26:58
 */
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './MessageList.css';
 import MessageItem from '../MessageItem/MessageItem';
+import { useParams } from 'react-router-dom';
+import { getMessage } from '../../api/api-chat';
+import { Message } from '../../models/Message';
+import { useDispatch } from 'react-redux';
+import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
+import { socket } from '../../api/api-socket';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from '../../redux/selectors/selectors';
+import { makeSound } from '../../api/api-audio';
 
-
-interface MessageListProps {
-
-}
-
+interface MessageListProps { }
 
 const MessageList: FC<MessageListProps> = () => {
+  const { chatId } = useParams();
+  const currentUser = useSelector(getCurrentUser);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const dispatch = useDispatch();
 
-
-  const messages = [
-    {
-      "id": 1,
-      "owner": true,
-      "content": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci dolorem distinctio molestiae? Quod id praesentium fuga, ut numquam ullam, cupiditate in sequi eveniet, laboriosam quibusdam ipsum labore nisi similique voluptatem.",
-      "timestamp": "2024-01-01T10:00:00"
-    },
-    {
-      "id": 2,
-      "owner": false,
-      "content": "Another message content here.",
-      "timestamp": "2024-01-02T12:30:00"
-    },
-    {
-      "id": 3,
-      "owner": true,
-      "content": "Yet another message content.",
-      "timestamp": "2024-01-03T15:45:00"
-    },
-    {
-      "id": 4,
-      "owner": false,
-      "content": "Adding a new message.",
-      "timestamp": "2024-01-04T18:20:00"
-    },
-    {
-      "id": 5,
-      "owner": true,
-      "content": "One more message for good measure.",
-      "timestamp": "2024-01-05T21:05:00"
-    },
-    {
-      "id": 6,
-      "owner": false,
-      "content": "Last message in the list.",
-      "timestamp": "2024-01-06T23:50:00"
-    },
-    {
-      "id": 7,
-      "owner": true,
-      "content": "A new message to display.",
-      "timestamp": "2024-01-07T02:15:00"
-    },
-    {
-      "id": 8,
-      "owner": false,
-      "content": "Yet another message from a different sender.",
-      "timestamp": "2024-01-08T04:40:00"
-    },
-    {
-      "id": 9,
-      "owner": true,
-      "content": "Adding more data to the message list.",
-      "timestamp": "2024-01-09T07:25:00"
-    },
-    {
-      "id": 10,
-      "owner": false,
-      "content": "Last message for now.",
-      "timestamp": "2024-01-10T09:50:00"
-    }
-  ]
+  const updateScroll = () => {
+    setTimeout(() => {
+      const messageListElement = document.querySelector('.MessageList');
+      if (messageListElement) {
+        messageListElement.scrollTop = messageListElement.scrollHeight;
+      }
+    }, 100);
+  };
 
   useEffect(() => {
-    // window.scrollTo(0,0)
-    const runLocalData = async () => {
+    updateScroll();
+    socket.emit('initUserId', currentUser._id);
 
-    }
-    runLocalData()
-  })
+    socket.on('newMessage', (message: Message) => {
+      if (chatId === message.chatId) {
+        console.log({message});
+        setMessages((prevMessages) => [...prevMessages, message]);
+        updateScroll();
+        if(currentUser._id !== message.ownership){
+          makeSound('success')
+        }
+      }
+    });
+
+    return () => {
+      // Cleanup socket listeners on component unmount
+      socket.off('newMessage');
+    };
+
+  }, [chatId, messages?.length]);
+
+  useEffect(() => {
+    const runLocalData = async () => {
+      if (chatId) {
+        const data = await getMessage(chatId);
+        setMessages(data.results);
+        dispatch({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'currentChatId',
+          payload: chatId,
+        });
+      }
+    };
+    runLocalData();
+  }, [chatId, dispatch]);
+
+
 
   return (
-    <>
-      <div className="MessageList page-content-sm p-1" style={{ backgroundImage: `url('/bg.png')` }}>
-        {
-          messages.map((message) => {
-            return <MessageItem
-              key={message.id}
-              owner={message.owner}
-              message={message}
-            />
-          })
-        }
-      </div>
-      
-    </>
+    <div className="MessageList page-content-sm p-1" style={{ backgroundImage: `url('/bg.png')` }}>
+      {messages?.map((message) => (
+        <MessageItem key={message._id} message={message} />
+      ))}
+    </div>
   );
-}
+};
 
 export default MessageList;

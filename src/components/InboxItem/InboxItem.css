@@ -20,10 +20,10 @@
 .InboxItem:last-child{
   /* border: none; */
 }
-.last-message .message{
+.InboxItem .lastMessage{
   white-space: nowrap;
   /* border: 1px solid red; */
-  max-width: 65vw;
+  max-width: 45vw;
   overflow: hidden;
   text-overflow: ellipsis;
 }
