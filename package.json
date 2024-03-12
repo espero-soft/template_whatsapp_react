@@ -46,7 +46,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "set \"GENERATE_SOURCEMAP=false\"  && react-scripts build",
+    "publish": "git add . && git commit -m 'update' && git push && npm run build &&  scp -r -P 1024 build espero-soft@54.36.62.80:/home/espero-soft/front-whatsapp",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",

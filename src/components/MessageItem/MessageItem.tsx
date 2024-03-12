@@ -24,7 +24,6 @@ const MessageItem : FC<MessageItemProps> = ({ message}) =>{
     useEffect(() => {
       window.scrollTo(0,0)
       const runLocalData = async () => {
-
       }
       runLocalData()
     })
