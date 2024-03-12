@@ -64,6 +64,7 @@ const InboxItem: FC<InboxItemProps> = ({ chat }) => {
   if (!user) {
     user = chat.participants[0]
   }
+  
 
   return (
     <div className="InboxItem">
