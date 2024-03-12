@@ -123,7 +123,7 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
           <small className="">{`${Math.floor(callDuration / 60)}:${callDuration % 60}`}</small>
           { answer && <small className="">{answer}</small> }
             {callerStream && (
-          <audio autoPlay controls ref={audioRef} ></audio>
+          <audio autoPlay  ref={audioRef} ></audio>
           
         )}
         </div>

@@ -102,25 +102,24 @@ const CallReceiver: FC<CallReceiverProps> = ({ newPeer }) => {
   const answerCall = () => {
     setCallAccepted(true);
 
-    if (stream) {
-      const call = newPeer?.call(callData.offer, stream!);
 
-      call?.on('stream', (userStream) => {
-        console.log({ userStream });
-        setCallerStream(userStream);
-        if(audioRef.current){
-          audioRef.current.srcObject = userStream
-        }
+    const call = newPeer?.call(callData.offer, stream!);
 
-        // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
-      });
+    call?.on('stream', (userStream) => {
+      setCallerStream(userStream);
+      if (audioRef.current) {
+        audioRef.current.srcObject = userStream
+      }
 
-      // Envoyer une réponse à l'appelant
-      socket.emit('make-answer', {
-        answer: call?.metadata,
-        to: callData.offer,
-      });
-    }
+      // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
+    });
+
+    // Envoyer une réponse à l'appelant
+    socket.emit('make-answer', {
+      answer: call?.metadata,
+      to: callData.offer,
+    });
+
 
   };
 
@@ -143,8 +142,8 @@ const CallReceiver: FC<CallReceiverProps> = ({ newPeer }) => {
           }
           <small className="">{`${Math.floor(callDuration / 60)}:${callDuration % 60}`}</small>
         </div>
-        {callAccepted && callerStream && (
-            <audio controls autoPlay ref={audioRef} ></audio>
+        {callerStream && (
+          <audio autoPlay ref={audioRef} ></audio>
         )}
         <div className="callAction d-flex gap-2 justify-content-center">
           <button onClick={answerCall} className="icon  btn btn-success rounded-circle">
