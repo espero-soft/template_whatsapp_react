@@ -4,15 +4,18 @@
   App Name : E-commerce with React.Js
   Created At : 10/03/2024 20:35:44
 */
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './AudioCall.css';
-import { useParams } from 'react-router-dom';
+import {  useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {  getSender } from '../../redux/selectors/selectors';
+import {  getCurrentUser, getSender } from '../../redux/selectors/selectors';
 import { defaultImage } from '../../helpers/utils';
 import { makeSound, stopSound } from '../../api/api-audio';
 import Peer from 'peerjs';
-import { connectToPeer } from '../../api/api-peerjs';
+// import { connectToPeer } from '../../api/api-peerjs';
+import { socket } from '../../api/api-socket';
+import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
+import { useDispatch } from 'react-redux';
 
 
 interface AudioCallProps {
@@ -24,19 +27,55 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
 
   const {senderId} = useParams()
   const sender = useSelector(getSender)
-
+  const [answer, setAnswer] = useState<string>('')
+  const currentUser = useSelector(getCurrentUser)
+  const dispach = useDispatch()
   
 
   useEffect(() => {
     const runLocalData = async () => {
       try {
         // console.log({ name: sender.name });
+        navigator.mediaDevices.getUserMedia({ video: false, audio: true })
+      .then((currentStream) => {
+        console.log({currentStream});
+        
         makeSound('audio-call');
+        socket.emit("call-user", {
+          to: sender._id,
+          called: sender,
+          offer: currentUser._id,
+        })
+        socket.on("call-rejected", ()=>{
+          console.log('call-rejected');
+          setAnswer('Refusé !')
+          setTimeout(()=>{
+            window.history.back();
+          }, 2000)
+          stopSound();
+          dispach({
+            type: ADD_TO_STORAGE,
+            unique: true,
+            key: 'newCall',
+            payload: false
+          })
+        })
+      
+        newPeer?.on('call', (call)=>{
+          call.answer(currentStream);
+          call.on('stream', (userStream) => {
+            console.log({userStream});
+            
+            // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
+          });
+        })
+        
 
-        if(newPeer){
-          connectToPeer(newPeer, sender._id)
-        }
-       
+      })
+        
+        // if(newPeer){
+        //   connectToPeer(newPeer, sender._id)
+        // }
         // Nettoyez les ressources lors du démontage du composant
         return () => {
           stopSound();
@@ -58,6 +97,9 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
           <div className="username">{sender.name}</div>
           <small className="">Appel en cours ...</small>
           <small className="">03:00</small>
+          {
+            answer && <small className="">{answer}</small>
+          }
         </div>
       </div>
     </div>

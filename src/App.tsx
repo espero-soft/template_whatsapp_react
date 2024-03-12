@@ -39,8 +39,34 @@ const App: React.FC = () => {
     initSocketIo()
     if(currentUser){
       socket.emit('initUserId', currentUser._id);
+      socket.on("call-made", (data)=>{
+
+        console.log("call-made :", {data});
+        
+        dispach({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'newCall',
+          payload: true
+        })
+        dispach({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'sender',
+          payload: data.called
+        })
+        dispach({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'callData',
+          payload: data
+        })
+      })
+      
       const newPeerData = initPeer(currentUser._id)
 
+      console.log(newPeerData);
+      
       // ===================================
       newPeerData?.on('open', (id) => {
         console.log('ID Peer ouvert :', id);
@@ -49,12 +75,7 @@ const App: React.FC = () => {
       newPeerData?.on('connection', (connection) => {
         // Logique pour gérer une nouvelle connexion
         console.log({connection});
-        dispach({
-          type: ADD_TO_STORAGE,
-          unique: true,
-          key: 'newCall',
-          payload: true
-        })
+       
    
         
       });
@@ -196,7 +217,7 @@ const App: React.FC = () => {
       </div>
       {
         newCall ?
-        <CallReceiver/>
+        <CallReceiver newPeer={newPeer} />
         :
         null
       }
