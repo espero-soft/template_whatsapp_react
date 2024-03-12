@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Inbox from './components/Inbox/Inbox';
 import MessageList from './components/MessageList/MessageList';
@@ -20,15 +20,59 @@ import AudioCall from './components/AudioCall/AudioCall';
 import VideoCall from './components/VideoCall/VideoCall';
 import CallFooter from './components/CallFooter/CallFooter';
 import { initSocketIo, socket } from './api/api-socket';
+import { useSelector } from 'react-redux';
+import { getCurrentUser, getNewCall } from './redux/selectors/selectors';
+import { initPeer } from './api/api-peerjs';
+import Peer from 'peerjs';
+import CallReceiver from './components/CallReceiver/CallReceiver';
+import { ADD_TO_STORAGE } from './redux/actions/actionTypes';
+import { useDispatch } from 'react-redux';
 
 const App: React.FC = () => {
 
+  const currentUser = useSelector(getCurrentUser);
+  const newCall = useSelector(getNewCall);
+  const [newPeer, setNewPeer] = useState<Peer|null>(null)
+  const dispach = useDispatch()
+
   useEffect(() => {
     initSocketIo()
+    if(currentUser){
+      socket.emit('initUserId', currentUser._id);
+      const newPeerData = initPeer(currentUser._id)
+
+      // ===================================
+      newPeerData?.on('open', (id) => {
+        console.log('ID Peer ouvert :', id);
+      });
+    
+      newPeerData?.on('connection', (connection) => {
+        // Logique pour gérer une nouvelle connexion
+        console.log({connection});
+        dispach({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'newCall',
+          payload: true
+        })
+   
+        
+      });
+    
+      
+      newPeerData?.on('error', (error) => {
+        console.error('Erreur PeerJS :', error);
+      });
+
+      // ===================================
+
+      setNewPeer(newPeerData)
+    }
+
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [currentUser]);
 
   return (
     <BrowserRouter>
@@ -62,16 +106,16 @@ const App: React.FC = () => {
           </>
           
           } />
-        <Route path="/audio-call" element={
+        <Route path="/audio-call/:senderId" element={
           <>
-          <AudioCall />
+          <AudioCall newPeer={newPeer} />
           <CallFooter/>
           </>
           
           } />
-        <Route path="/video-call" element={
+        <Route path="/video-call/:senderId" element={
           <>
-          <VideoCall />
+          <VideoCall newPeer={newPeer} />
           <CallFooter/>
           </>
           
@@ -147,6 +191,15 @@ const App: React.FC = () => {
         />
       </Routes>
       {/* </div> */}
+      <div className="audio-player">
+        <audio></audio>
+      </div>
+      {
+        newCall ?
+        <CallReceiver/>
+        :
+        null
+      }
       <NotificationComponent />
     </BrowserRouter>
   )

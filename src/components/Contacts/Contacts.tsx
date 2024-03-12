@@ -10,6 +10,8 @@ import { getDatas } from '../../api/api-entity';
 import { User } from '../../models/User';
 import ContactItem from '../ContactItem/ContactItem';
 import { defaultImage } from '../../helpers/utils';
+import { useSelector } from 'react-redux';
+import { getCurrentUser } from '../../redux/selectors/selectors';
 
 
 interface ContactsProps {
@@ -19,6 +21,7 @@ interface ContactsProps {
 
 const Contacts : FC<ContactsProps> = () =>{
 
+  const currentUser = useSelector(getCurrentUser)
   const [users, setUsers] = useState<Partial<User>[]|null>(null)
 
     useEffect(() => {
@@ -26,7 +29,7 @@ const Contacts : FC<ContactsProps> = () =>{
       const runLocalData = async () => {
         const data = await getDatas('user')
         if(data.isSuccess){
-          setUsers(data.results?.map((item: Partial<User>) =>{
+          setUsers(data.results?.filter((item: Partial<User>) => item._id !== currentUser!._id).map((item: Partial<User>) =>{
             return {
               _id: item._id,
               name: item.fullname,

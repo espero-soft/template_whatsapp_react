@@ -21,6 +21,7 @@ interface InboxProps {
 const Inbox: FC<InboxProps> = () => {
 
   const [chats, setChats] = useState<Chat[]>([])
+ 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   // const inboxData: any[] = []
   // [

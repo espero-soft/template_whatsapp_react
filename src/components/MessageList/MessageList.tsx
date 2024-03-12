@@ -36,7 +36,7 @@ const MessageList: FC<MessageListProps> = () => {
 
   useEffect(() => {
     updateScroll();
-    socket.emit('initUserId', currentUser._id);
+    
 
     socket.on('newMessage', (message: Message) => {
       if (chatId === message.chatId) {

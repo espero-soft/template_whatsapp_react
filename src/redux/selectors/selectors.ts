@@ -10,7 +10,13 @@ export const isAdminSelector = (state: GlobalState) => state.auth?.user?.roles.i
 
 
 export const getCurrentUser = (state: GlobalState) => state.auth.user
+
+export const getNewCall = (state: GlobalState) => state.storage.newCall
+
 export const getSender = (state: GlobalState) => state.storage?.sender
+
+export const getOwner = (state: GlobalState) => state.storage?.ownership
+
 export const getCurrentChatId = (state: GlobalState) => state.storage?.currentChatId
 
 export const getUserId = (state: GlobalState) => state.auth.userId

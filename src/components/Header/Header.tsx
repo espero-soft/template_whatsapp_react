@@ -12,6 +12,8 @@ import UserBox from '../UserBox/UserBox';
 import SettingBox from '../SettingBox/SettingBox';
 import { ucfirst } from '../../helpers/utiles';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { getSender } from '../../redux/selectors/selectors';
 
 
 interface HeaderProps {
@@ -23,6 +25,7 @@ const Header: FC<HeaderProps> = () => {
 
   const location = useLocation()
   const [setting, setSetting] = useState<boolean>(false)
+  const sender = useSelector(getSender)
 
   let pageName = location.pathname.split('/')[1]
 
@@ -76,13 +79,13 @@ const Header: FC<HeaderProps> = () => {
         {
           location.pathname.startsWith("/message") &&
           <>
-            <Link to={"/audio-call"}>
+            <Link to={"/audio-call/"+sender._id}>
               <button className='btn'>
                 <i className="fa fa-phone"></i>
               </button>
 
             </Link>
-            <Link to={"/video-call"}>
+            <Link to={"/video-call/"+sender._id}>
               <button className='btn'>
                 <i className="fa fa-video"></i>
               </button>

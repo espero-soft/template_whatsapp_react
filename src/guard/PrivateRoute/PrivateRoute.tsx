@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }: any) => {
   const isAuth = useSelector(getAuthState)
   const location = useLocation()
   
-  console.log({isAuth});
+  // console.log({isAuth});
   
 
   if(!isAuth){
