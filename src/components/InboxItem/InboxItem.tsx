@@ -69,7 +69,10 @@ const InboxItem: FC<InboxItemProps> = ({ chat }) => {
     <div className="InboxItem">
       <div onClick={() => handleGoToMessage(user!)} className="d-flex gap-2">
         <div className="Inbox-Picture">
-          <img src={user.profile.picture || defaultImage} width={50} className='rounded-circle shadow-lg' alt="" />
+          <img src={user.profile.picture || defaultImage} 
+          width={40} 
+          height={40}
+          className='rounded-circle shadow-lg' alt="" />
         </div>
         <div className="Inbox-Details">
           <div className="author">

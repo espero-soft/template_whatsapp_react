@@ -34,7 +34,10 @@ const UserBox: FC<UserBoxProps> = () => {
     <Link to='/profil'>
     <div className="UserBox d-flex gap-2 align-items-center">
       <div className="user-picture">
-        <img src={sender.imageUrl || defaultImage} width={40} className='rounded-circle shadow-lg' alt="" />
+        <img src={sender.imageUrl || defaultImage} 
+        width={40} 
+        height={40}
+        className='rounded-circle shadow-lg' alt="" />
       </div>
       <div className="user-details d-flex">
         <div className="username">{sender.name}</div>
