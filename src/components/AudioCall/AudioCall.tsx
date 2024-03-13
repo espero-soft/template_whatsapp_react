@@ -75,6 +75,18 @@ const AudioCall: FC<AudioCallProps> = ({ newPeer, received }) => {
                 key: 'newCall',
                 payload: false
               })
+
+              // Obtenez le flux du microphone
+
+              // Arrêtez le flux du microphone
+              currentStream?.getAudioTracks().forEach(track => {
+                track.stop();
+              });
+
+              // Assurez-vous de supprimer les références au flux
+              currentStream?.getTracks().forEach(track => {
+                track.stop();
+              });
             })
 
 
@@ -123,12 +135,12 @@ const AudioCall: FC<AudioCallProps> = ({ newPeer, received }) => {
       timer = setInterval(() => {
         setCallDuration((prevDuration) => prevDuration + 1);
       }, 1000);
-      if(callEnded){
+      if (callEnded) {
         clearInterval(timer)
       }
     }
     return () => clearInterval(timer);
-  }, [callerStream]);
+  }, [callerStream, callEnded]);
 
   // Fonction pour rejeter un appel
   const rejectCall = () => {
@@ -145,6 +157,8 @@ const AudioCall: FC<AudioCallProps> = ({ newPeer, received }) => {
       key: 'newCall',
       payload: false
     })
+
+   
   };
 
   const answerCall = () => {
@@ -192,9 +206,12 @@ const AudioCall: FC<AudioCallProps> = ({ newPeer, received }) => {
               <>
                 <small className="">Appel entrant ...</small>
                 <div className="callAction d-flex gap-2 justify-content-center">
-                  <button onClick={answerCall} className="icon  btn btn-success rounded-circle">
-                    <i className="fa fa-phone"></i>
-                  </button>
+                  {
+                    ! callAccepted &&
+                    <button onClick={answerCall} className="icon  btn btn-success rounded-circle">
+                      <i className="fa fa-phone"></i>
+                    </button>
+                  }
                   <button onClick={rejectCall} className="icon end btn bg-danger rounded-circle">
                     <i className="fa fa-phone"></i>
                   </button>
