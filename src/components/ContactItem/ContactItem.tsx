@@ -45,9 +45,9 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
 
   const handleGoToMessage = async () => {
     const data = await getChat(contact._id!)
-    
-    if(data.isSuccess){
-      navigate('/message/'+data.result._id)
+
+    if (data.isSuccess) {
+      navigate('/message/' + data.result._id)
     }
   }
   const handleSaveSender = async () => {
@@ -63,10 +63,10 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
 
     <div onClick={handleSaveSender} className="ContactItem p-1 d-flex gap-2 px-2 align-items-center">
       <div className="user-picture">
-        <img src={imageUrl} 
-        width={40} 
-        height={40}
-        className='rounded-circle shadow-lg' alt="" />
+        <img src={imageUrl}
+          width={40}
+          height={40}
+          className='rounded-circle shadow-lg' alt="" />
       </div>
       <Link to={'/profil/' + contact._id} className='flex-grow-1'>
         <div className="user-details d-flex">
@@ -82,11 +82,9 @@ const ContactItem: FC<ContactItemProps> = ({ contact }) => {
       </Link>
       <div className="user-call d-flex gap-3">
         <div className="audio-call">
-
           <button className='btn' onClick={handleGoToMessage}>
             <i className="fa fa-message"></i>
           </button>
-
         </div>
         <div className="audio-call">
           <Link to={"/audio-call/" + contact._id}>

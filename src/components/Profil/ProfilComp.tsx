@@ -9,10 +9,14 @@ import './ProfilComp.css';
 import ProfilDetailsItem from '../ProfilDetailsItem/ProfilDetailsItem';
 import { getDatasById, updateData, updateDataWithFile } from '../../api/api-entity';
 import { convertFileToUrl } from '../../helpers/fileHelpers';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from '../../redux/selectors/selectors';
 import { User } from '../../models/User';
+import { Link } from 'react-router-dom';
+import { getChat } from '../../api/api-chat';
+import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
+import { useDispatch } from 'react-redux';
 
 
 interface ProfilCompProps {
@@ -27,6 +31,8 @@ const ProfilComp: FC<ProfilCompProps> = () => {
   const [user, setUser] = useState<User | null>(null)
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const navigate = useNavigate()
+  const dispach = useDispatch()
   const { userId } = useParams()
 
 
@@ -37,7 +43,7 @@ const ProfilComp: FC<ProfilCompProps> = () => {
       const userData = await getDatasById("user", userId!)
       console.log({ userData });
       if (userData.isSuccess) {
-        console.log({profile: userData.result.profile})
+        console.log({ profile: userData.result.profile })
         setUser(userData.result)
       }
     }
@@ -46,12 +52,12 @@ const ProfilComp: FC<ProfilCompProps> = () => {
 
   const handleSave = (name: string, value: string) => {
     console.log({ name, value });
-    let profile 
-    if(name.search('user') === -1){
+    let profile
+    if (name.search('user') === -1) {
       profile = { [name]: value }
-    }else{
+    } else {
       name = name.split('user.')[1]
-      profile = { user: {[name]: value} }
+      profile = { user: { [name]: value } }
     }
     updateData('profile', user?.profile?._id!, { profile })
 
@@ -68,15 +74,43 @@ const ProfilComp: FC<ProfilCompProps> = () => {
 
       const formData = new FormData()
       formData.append('picture', selectedFile)
-      formData.append('profile', JSON.stringify({  business_name: user?.profile?.business_name  }))
+      formData.append('profile', JSON.stringify({ business_name: user?.profile?.business_name }))
 
       updateDataWithFile('profile', user?.profile?._id!, formData)
     }
   };
 
+  const handleSaveSender = async () => {
+    dispach({
+      type: ADD_TO_STORAGE,
+      unique: true,
+      key: 'sender',
+      payload: {
+        _id: user?._id,
+        name: user?.fullname,
+        imageUrl: user?.profile.picture,
+        status: "En ligne"
+      }
+    })
+  }
+
+  const handleGoToMessage = async () => {
+
+    if (user) {
+      const data = await getChat(user?._id!)
+      console.log({ data });
+
+      if (data.isSuccess) {
+        navigate('/message/' + data.result._id)
+      }
+
+    }
+  }
   const triggerFileInput = () => {
     fileInput.current?.click();
   };
+
+
 
   return (
     <div className="ProfilContent page-content">
@@ -90,7 +124,7 @@ const ProfilComp: FC<ProfilCompProps> = () => {
               className='rounded-circle' alt="" />
 
             {
-              currentUser._id === user?._id &&
+              currentUser._id === user?._id ?
                 <>
                   <input
                     ref={fileInput}
@@ -106,12 +140,40 @@ const ProfilComp: FC<ProfilCompProps> = () => {
                     </div>
                   </div>
                 </>
-               
+                :
+                null
+
             }
 
           </div>
         </div>
       </div>
+      {
+        currentUser._id !== user?._id &&
+        <div onClick={handleSaveSender}>
+          <div className="user-call d-flex gap-3 align-items-center justify-content-center">
+            <div className="audio-call">
+              <button className='btn' onClick={handleGoToMessage}>
+                <i className="fa fa-message"></i>
+              </button>
+            </div>
+            <div className="audio-call">
+              <Link to={"/audio-call/" + user?._id}>
+                <button className='btn'>
+                  <i className="fa fa-phone"></i>
+                </button>
+              </Link>
+            </div>
+            <div className="video-call">
+              <Link to={"/video-call/" + user?._id}>
+                <button className='btn'>
+                  <i className="fa fa-video"></i>
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      }
 
       {
         user &&

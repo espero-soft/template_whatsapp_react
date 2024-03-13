@@ -140,7 +140,9 @@ const CallReceiver: FC<CallReceiverProps> = ({ newPeer }) => {
           {
             callEnded && <p>Terminé !</p>
           }
-          <small className="">{`${Math.floor(callDuration / 60)}:${callDuration % 60}`}</small>
+          <small className="">
+            {`${Math.floor(callDuration / 60) < 10 ? '0' : ''}${Math.floor(callDuration / 60)}:${callDuration % 60}`}
+          </small>
         </div>
         {callerStream && (
           <audio autoPlay ref={audioRef} ></audio>

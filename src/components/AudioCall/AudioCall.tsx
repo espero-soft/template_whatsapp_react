@@ -6,9 +6,9 @@
 */
 import React, { FC, useEffect, useRef, useState } from 'react';
 import './AudioCall.css';
-import {  useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {  getCurrentUser, getSender } from '../../redux/selectors/selectors';
+import { getCurrentUser, getSender } from '../../redux/selectors/selectors';
 import { defaultImage } from '../../helpers/utils';
 import { makeSound, stopSound } from '../../api/api-audio';
 import Peer from 'peerjs';
@@ -19,13 +19,13 @@ import { useDispatch } from 'react-redux';
 
 
 interface AudioCallProps {
-  newPeer: Peer|null
+  newPeer: Peer | null
 }
 
 
-const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
+const AudioCall: FC<AudioCallProps> = ({ newPeer }) => {
 
-  const {senderId} = useParams()
+  const { senderId } = useParams()
   const sender = useSelector(getSender)
   const audioRef = useRef<HTMLAudioElement>(null)
   const [answer, setAnswer] = useState<string>('')
@@ -33,58 +33,56 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
   const [callerStream, setCallerStream] = useState<MediaStream>();
   const [callDuration, setCallDuration] = useState<number>(0);
   const dispach = useDispatch()
-  
+
 
   useEffect(() => {
     const runLocalData = async () => {
       try {
         // console.log({ name: sender.name });
         navigator.mediaDevices.getUserMedia({ video: false, audio: true })
-      .then((currentStream) => {
-        makeSound('audio-call');
-        socket.emit("call-user", {
-          to: sender._id,
-          called: sender,
-          offer: currentUser._id,
-        })
-        socket.on("call-rejected", ()=>{
-          console.log('call-rejected');
-          if(callDuration === 0){
-            setAnswer('Refusé !')
-          }else{
-            setAnswer('Coupé !')
+          .then((currentStream) => {
+            makeSound('audio-call');
+            socket.emit("call-user", {
+              to: sender._id,
+              called: sender,
+              offer: currentUser._id,
+            })
+            socket.on("call-rejected", () => {
+              console.log('call-rejected');
+              if (callDuration === 0) {
+                setAnswer('Refusé !')
+              } else {
+                setAnswer('Coupé !')
 
-          }
-          setTimeout(()=>{
-            window.history.back();
-          }, 2000)
-          stopSound();
-          dispach({
-            type: ADD_TO_STORAGE,
-            unique: true,
-            key: 'newCall',
-            payload: false
+              }
+              
+              stopSound();
+              dispach({
+                type: ADD_TO_STORAGE,
+                unique: true,
+                key: 'newCall',
+                payload: false
+              })
+            })
+
+            newPeer?.on('call', (call) => {
+              call.answer(currentStream);
+              call.on('stream', (userStream) => {
+                console.log({ userStream });
+                setCallerStream(userStream)
+                if (audioRef.current) {
+                  audioRef.current.srcObject = userStream
+                }
+                setAnswer('Communication en cours !')
+                stopSound();
+
+                // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
+              });
+            })
+
+
           })
-        })
-      
-        newPeer?.on('call', (call)=>{
-          call.answer(currentStream);
-          call.on('stream', (userStream) => {
-            console.log({userStream});
-            setCallerStream(userStream)
-            if(audioRef.current){
-              audioRef.current.srcObject = userStream
-            }
-            setAnswer('Communication en cours !')
-            stopSound();
-            
-            // Mettez à jour l'interface utilisateur pour afficher le flux audio de l'appelant
-          });
-        })
-        
 
-      })
-        
         // if(newPeer){
         //   connectToPeer(newPeer, sender._id)
         // }
@@ -97,7 +95,7 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
       }
     };
     runLocalData()
-  },[senderId])
+  }, [senderId])
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -120,12 +118,14 @@ const AudioCall: FC<AudioCallProps> = ({newPeer}) => {
         <div className="user-details d-flex">
           <div className="username">{sender.name}</div>
           <small className="">Appel en cours ...</small>
-          <small className="">{`${Math.floor(callDuration / 60)}:${callDuration % 60}`}</small>
-          { answer && <small className="">{answer}</small> }
-            {callerStream && (
-          <audio autoPlay  ref={audioRef} ></audio>
-          
-        )}
+          <small className="">
+            {`${Math.floor(callDuration / 60) < 10 ? '0' : ''}${Math.floor(callDuration / 60)}:${callDuration % 60}`}
+          </small>
+          {answer && <small className="">{answer}</small>}
+          {callerStream && (
+            <audio autoPlay ref={audioRef} ></audio>
+
+          )}
         </div>
       </div>
     </div>

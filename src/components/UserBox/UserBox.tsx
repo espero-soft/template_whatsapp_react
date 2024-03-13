@@ -31,20 +31,19 @@ const UserBox: FC<UserBoxProps> = () => {
   })
 
   return (
-    <Link to={'/profil/'+sender._id}>
-    <div className="UserBox d-flex gap-2 align-items-center">
-      <div className="user-picture">
-        <img src={sender.imageUrl || defaultImage} 
-        width={40} 
-        height={40}
-        className='rounded-circle shadow-lg' alt="" />
+    <Link to={'/profil/' + sender._id}>
+      <div className="UserBox d-flex gap-2 align-items-center">
+        <div className="user-picture">
+          <img src={sender.imageUrl || defaultImage}
+            width={40}
+            height={40}
+            className='rounded-circle shadow-lg' alt="" />
+        </div>
+        <div className="user-details d-flex">
+          <div className="username">{sender.name}</div>
+          <small className="online">{sender.status}</small>
+        </div>
       </div>
-      <div className="user-details d-flex">
-        <div className="username">{sender.name}</div>
-        <small className="online">{sender.status}</small>
-      </div>
-    
-    </div>
     </Link>
   );
 }
