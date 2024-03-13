@@ -43,7 +43,7 @@ const SettingBox: FC<SettingBoxProps> = ({onHide}) => {
   }
 
   return (
-    <div className="SettingBox" onMouseLeave={onHide}>
+    <div className="SettingBox" onTouchCancel={onHide}>
       <div className="setting-box position-absolute card shadow-lg">
         <ul className="list-group">
          

@@ -45,6 +45,7 @@ const CallReceiver: FC<CallReceiverProps> = ({ newPeer }) => {
             // Gestion des appels rejetés
             socket.on('call-rejected', () => {
               setCallEnded(true);
+              
               // Mettez à jour l'interface utilisateur pour informer l'utilisateur que l'appel a été rejeté
             });
 

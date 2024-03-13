@@ -102,7 +102,7 @@ const Header: FC<HeaderProps> = () => {
         {
           location.pathname === "/" &&
           <div className="position-relative setting">
-            <button onClick={() => setSetting(!setting)} className='btn' style={{ color: 'white' }}>
+            <button onClick={() => setSetting(true)} className='btn' style={{ color: 'white' }}>
               <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
             {setting && <SettingBox

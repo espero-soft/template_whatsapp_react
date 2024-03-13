@@ -9,9 +9,10 @@ import './CallFooter.css';
 import { Link, useLocation } from 'react-router-dom';
 import { stopSound } from '../../api/api-audio';
 import { useSelector } from 'react-redux';
-import { getSender } from '../../redux/selectors/selectors';
+import { getCurrentUser, getSender } from '../../redux/selectors/selectors';
 import { useDispatch } from 'react-redux';
 import { ADD_TO_STORAGE } from '../../redux/actions/actionTypes';
+import { socket } from '../../api/api-socket';
 
 
 interface CallFooterProps {
@@ -23,6 +24,7 @@ const CallFooter: FC<CallFooterProps> = () => {
 
   const location = useLocation()
   const sender = useSelector(getSender)
+  const currentUser = useSelector(getCurrentUser)
   const dispach = useDispatch()
 
 
@@ -43,6 +45,9 @@ const CallFooter: FC<CallFooterProps> = () => {
       // Peut-être rediriger vers la page d'accueil, ou effectuer une autre action.
       console.warn("Aucune page précédente sur le même domaine.");
     }
+    socket.emit('reject-call', {
+      from: currentUser._id,
+    });
     dispach({
       type: ADD_TO_STORAGE,
       unique: true,

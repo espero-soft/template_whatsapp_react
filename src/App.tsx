@@ -24,7 +24,6 @@ import { useSelector } from 'react-redux';
 import { getCurrentUser, getNewCall } from './redux/selectors/selectors';
 import { initPeer } from './api/api-peerjs';
 import Peer from 'peerjs';
-import CallReceiver from './components/CallReceiver/CallReceiver';
 import { ADD_TO_STORAGE } from './redux/actions/actionTypes';
 import { useDispatch } from 'react-redux';
 
@@ -39,6 +38,14 @@ const App: React.FC = () => {
     initSocketIo()
     if(currentUser){
       socket.emit('initUserId', currentUser._id);
+      socket.on("call-end", ()=>{
+        dispach({
+          type: ADD_TO_STORAGE,
+          unique: true,
+          key: 'newCall',
+          payload: false
+        })
+      })
       socket.on("call-made", (data)=>{
 
         console.log("call-made :", {data});
@@ -217,7 +224,11 @@ const App: React.FC = () => {
       </div>
       {
         newCall ?
-        <CallReceiver newPeer={newPeer} />
+        <div className='receive-call'>
+          <AudioCall 
+          newPeer={newPeer} 
+          received={true} />
+        </div>
         :
         null
       }
